@@ -1,0 +1,33 @@
+# This file is a UTF8 example of schema
+# and this two lines are comments.
+
+# This example include all features of the Piche language
+# for schemas.
+
+PersonaNatural  rut                rut ;
+                nombres            texto ;
+                apellidoPaterno    texto ;
+                apellidoMaterno    texto .
+PersonaJurídica rut                rut ;
+                razónSocial        texto .
+
+ContrataciónHonorarios |
+ContrataciónPlanta |
+ContrataciónCódigoTrabajo     contratado      PersonaNatural ;
+                              función         texto ;
+                              región          Región ;
+                              observaciones   texto .
+
+ContrataciónHonorarios |
+ContrataciónCódigoTrabajo |
+RemuneracionesSegúnGrado      grado           gradoEUS ;
+                              unidadMonetaria unidadMonetaria ;
+                              montoMensual    número .
+ContrataciónPlanta            remuneraciones  RemuneracionesSegúnGrado .
+RemuneracionesSegúnGrado      estamento       estamento .
+
+ContrataciónAdquisición       contratado      PersonaNatural ,
+                                              PersonaJurídica ;
+                              unidadMonetaria unidadMonetaria ;
+                              montoTotal      número ;
+                              actoNormativo   Normativa .
