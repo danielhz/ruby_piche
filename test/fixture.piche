@@ -4,30 +4,51 @@
 # This example include all features of the Piche language
 # for schemas.
 
-PersonaNatural  rut                rut ;
-                nombres            texto ;
-                apellidoPaterno    texto ;
-                apellidoMaterno    texto .
-PersonaJurídica rut                rut ;
-                razónSocial        texto .
+@subject
 
-ContrataciónHonorarios |
-ContrataciónPlanta |
-ContrataciónCódigoTrabajo     contratado      PersonaNatural ;
-                              función         texto ;
-                              región          Región ;
-                              observaciones   texto .
-
-ContrataciónHonorarios |
-ContrataciónCódigoTrabajo |
-RemuneracionesSegúnGrado      grado           gradoEUS ;
-                              unidadMonetaria unidadMonetaria ;
-                              montoMensual    número .
-ContrataciónPlanta            remuneraciones  RemuneracionesSegúnGrado .
-RemuneracionesSegúnGrado      estamento       estamento .
-
-ContrataciónAdquisición       contratado      PersonaNatural ,
-                                              PersonaJurídica ;
-                              unidadMonetaria unidadMonetaria ;
-                              montoTotal      número ;
-                              actoNormativo   Normativa .
+=PersonaNatural | =PersonaJurídica
+    +rut
+        $rut .
+=PersonaNatural
+    +nombres & +apellidoPaterno & +apellidoMaterno
+        $texto .
+=PersonaJurídica
+    +razónSocial
+        $texto ;
+    +socio
+        =PersonaNatural , =PersonaJurídica .
+=ContrataciónHonorarios | =ContrataciónPlanta | =ContrataciónCódigoTrabajo
+    +contratado
+        =PersonaNatural ;
+    +región
+        =Región ;
+    +observaciones
+        $texto .
+=ContrataciónHonorarios
+    +descripción
+        $texto .
+=ContrataciónPlanta | =ContrataciónCódigoTrabajo
+    +cargo
+        =Cargo .
+=ContrataciónHonorarios | =ContrataciónCódigoTrabajo | =RemuneracionesSegúnGrado
+    +gradoEUS
+        $gradoEUS ;
+    +unidadMonetaria
+        $unidadMonetaria ;
+    +montoMensual
+        $número .
+=ContrataciónPlanta
+    +remuneraciones
+        =RemuneracionesSegúnGrado .
+=RemuneracionesSegúnGrado
+    +estamento
+        $estamento .
+=ContrataciónAdquisición
+    +contratado
+        =PersonaNatural , =PersonaJurídica ;
+    +unidadMonetaria
+        $unidadMonetaria ;
+    +montoTotal
+        $número ;
+    +actoNormativo
+        =Normativa .

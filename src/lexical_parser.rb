@@ -34,7 +34,7 @@ module Piche
       while (c = @file.getc)
         if "#" == c.chr
           @file.readline
-        elsif (/^[|;,.\s]$/ =~ c.chr) == 0
+        elsif (/^[|&;,.\s]$/ =~ c.chr) == 0
           unless @token.strip == ""
             @buffer << @token.strip.to_sym
             @token = ""
