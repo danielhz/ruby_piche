@@ -1,0 +1,40 @@
+begin
+  require 'rubygems'
+  require 'rake/gempackagetask'
+rescue Exception
+  nil
+end
+require 'rake/clean'
+require 'rake/testtask'
+require 'rake/rdoctask'
+
+desc 'Run implemented tests'
+task :test do
+  exec 'spec "test/lexical_parser_test.rb"'
+end
+
+begin
+  require 'darkfish-rdoc'
+  DARKFISH_ENABLED = true
+rescue LoadError => ex
+  DARKFISH_ENABLED = false
+end
+
+BASE_RDOC_OPTIONS = [
+  '--line-numbers', '--inline-source',
+  '--main' , 'README.rdoc',
+  '--title', 'RubyPiche -- Tools for Piche language'
+]
+ 
+rd = Rake::RDocTask.new("rdoc") do |rdoc|
+  rdoc.rdoc_dir = 'html'
+#  rdoc.template = 'doc/jamis.rb'
+  rdoc.title = "RubyPiche -- Tools for Piche language"
+  rdoc.options = BASE_RDOC_OPTIONS.dup
+  rdoc.options << '-SHN' << '-f' << 'darkfish' if DARKFISH_ENABLED
+
+  rdoc.rdoc_files.include('README.rdoc')
+#  rdoc.rdoc_files.include('README.rdoc', 'MIT-LICENSE', 'TODO', 'CHANGES')
+  rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
+#  rdoc.rdoc_files.exclude(/\bcontrib\b/)
+end
