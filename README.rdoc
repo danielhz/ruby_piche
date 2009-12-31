@@ -18,7 +18,7 @@ structured as digraphs of length 3, but N Triples
 instances are lists, Turtle instances are trees and
 Piche are acyclic digraphs.
 
-link:files/digraphs.png
+link:http://github.com/danielhz/ruby_piche/raw/master/digraphs.png
 
 Piche also incorporates modules, an idea proposed by Javier D.
 Fernández and Claudio Gutiérrez in Compact and Modular
@@ -34,7 +34,7 @@ For example:
 The above figure shows a comparation of Piche with the other
 languages Turtle and N Triples:
 
-link:files/language_comparation.png
+link:http://github.com/danielhz/ruby_piche/raw/master/language_comparation.png
 
 The Piche syntax is:
 
