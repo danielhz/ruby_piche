@@ -1,3 +1,92 @@
-== RubyPiche -- Tools for Piche Language
+= RubyPiche -- Tools for Piche Language
 
-RubyPiche is a Ruby parser for Piche, a language like Turtle.
+RubyPiche is a Ruby parser and other tools for Piche, a
+language like Turtle. The name Piche (Zaedyus pichiy) is for
+an animal, also knowed as dwarf armadillo, that looks like
+a turtle, but is not the same. Piches are from the south of
+Argentina and Chile. Piche language is a compact way to code
+triples. The next are examples of encoding the same triples
+with Piche, Turtle and N Triples:
+
+  Piche:        a | b c & d f , g ; h i .
+  Turtle:       a c f , g ; h i . a d f , g . b c f , g ; h i . b d f , g .
+  N Triples:    a c f . a c g . a d f . a d g . a h i . b c f . b c g . b d f . b d g . b h i .
+
+The below diagrams for the examples above shows that
+N Triples, Turtle without blank nodes and Piche are
+structured as digraphs of length 3, but N Triples
+instances are lists, Turtle instances are trees and
+Piche are acyclic digraphs.
+
+link:files/digraphs.png
+
+Piche also incorporates modules, an idea proposed by Javier D.
+Fernández and Claudio Gutiérrez in Compact and Modular
+Representation of Large RDF Data Sets. Modules include the
+keywords @subj, @pred and @obj to mean that the following
+triples begins by subject, object and predicate respectively.
+For example:
+
+* <tt>@subj a b c ; d e .</tt> is equivalent to <tt>a b c . a d e .</tt>
+* <tt>@pred a b c ; d e .</tt> is equivalent to <tt>b a c . d a e .</tt>
+* <tt>@obj  a b c ; d e .</tt> is equivalent to <tt>b c a . a d e .</tt>
+
+The above figure shows a comparation of Piche with the other
+languages Turtle and N Triples:
+
+link:files/language_comparation.png
+
+The Piche syntax is:
+
+  statement ::= triples | ws* | module
+  module    ::= '@subj' | '@pred' | '@obj'
+  triples   ::= head ws+ tail '.'
+  head      ::= term | head '|' term
+  tail      ::= pairs | pairs ';' tail
+  pairs     ::= mterms ws+ lterms
+  mterms    ::= term | term '&' mterms
+  lterms    ::= term | term ',' lterms
+
+Where ws are white spaces and terms are identifiers or
+literals. In Piche we have not blank nodes, because
+piche is designed to work with a dictionary that associate
+the simple local Piche identifiers with any other indetifier
+system. Thus, blank nodes are nodes without an external
+identifier in the dictionary.
+
+= Other Piche notations
+
+The firt Piche notation was designed to allow human
+readability. Other notations are designed for other goals.
+
+[Array Notation] Is a notation that models piche instances like
+                 arrays. For example the notation for <tt>a b c , d .</tt> is
+                 <tt>[[:a] [[:b] [:c, :d]]]</tt> in Ruby language.
+[Notation 32 and Notation 64] Are notations to enconde triples in binary sequences
+                              where each identifier is an integer of 32 or 64 bits
+                              respectivaly.
+[Compresed Notation] Are a notation where identifiers an operators are
+                     coded with techniques of data compression for integers, like
+                     Elias coding.
+
+= Tools
+
+Tools in RubyPiche include (or are going to be included):
+
+* A lexical parser for Piche files.
+* A RAM graph structure that solve some basic queries.
+* A parser that read a Piche file and generate a RAM graph for it.
+* A constructor for Piche files from Turtle or N Triple files.
+
+= Other Stuff
+
+Author:: Daniel Hernández, daniel@degu.cl
+Version:: 0.0
+License:: GPL V3
+
+== Warranty
+
+This software is provided "as is" and without any express or
+implied warranties, including, without limitation, the implied
+warranties of merchantibility and fitness for a particular
+purpose.

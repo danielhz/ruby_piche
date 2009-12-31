@@ -1,3 +1,5 @@
+require 'ftools'
+
 begin
   require 'rubygems'
   require 'rake/gempackagetask'
@@ -32,9 +34,15 @@ rd = Rake::RDocTask.new("rdoc") do |rdoc|
   rdoc.title = "RubyPiche -- Tools for Piche language"
   rdoc.options = BASE_RDOC_OPTIONS.dup
   rdoc.options << '-SHN' << '-f' << 'darkfish' if DARKFISH_ENABLED
+  rdoc.options << '--charset' << 'utf-8'
 
   rdoc.rdoc_files.include('README.rdoc')
 #  rdoc.rdoc_files.include('README.rdoc', 'MIT-LICENSE', 'TODO', 'CHANGES')
   rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
 #  rdoc.rdoc_files.exclude(/\bcontrib\b/)
+end
+
+task :doc => :rdoc do
+  File.copy('language_comparation.png', 'html/files/language_comparation.png')
+  File.copy('digraphs.png', 'html/files/digraphs.png')
 end
