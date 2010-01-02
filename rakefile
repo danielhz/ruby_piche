@@ -24,11 +24,15 @@ end
 
 BASE_RDOC_OPTIONS = [
   '--line-numbers', '--inline-source',
-  '--main' , 'README.rdoc',
+  '--main' , 'index',
   '--title', 'RubyPiche -- Tools for Piche language'
 ]
- 
-rd = Rake::RDocTask.new("rdoc") do |rdoc|
+
+task :index_file do
+  exec 'sed "s/http:\/\/github.com\/danielhz\/ruby_piche\/raw\/master/link:files/g" README.rdoc > index'
+end
+
+rd = Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'html'
 #  rdoc.template = 'doc/jamis.rb'
   rdoc.title = "RubyPiche -- Tools for Piche language"
@@ -36,8 +40,8 @@ rd = Rake::RDocTask.new("rdoc") do |rdoc|
   rdoc.options << '-SHN' << '-f' << 'darkfish' if DARKFISH_ENABLED
   rdoc.options << '--charset' << 'utf-8'
 
-  rdoc.rdoc_files.include('README.rdoc')
-#  rdoc.rdoc_files.include('README.rdoc', 'MIT-LICENSE', 'TODO', 'CHANGES')
+  rdoc.rdoc_files.include('index')
+#  rdoc.rdoc_files.include('README', 'MIT-LICENSE', 'TODO', 'CHANGES')
   rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
 #  rdoc.rdoc_files.exclude(/\bcontrib\b/)
 end
@@ -45,4 +49,5 @@ end
 task :doc => :rdoc do
   File.copy('language_comparation.png', 'html/files/language_comparation.png')
   File.copy('digraphs.png', 'html/files/digraphs.png')
+  File.delete 'index'
 end
