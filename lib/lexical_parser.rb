@@ -32,7 +32,9 @@ module Piche
     # Get the next token.
     def next_token
       while (c = @file.getc)
-        if "#" == c.chr
+        if c.chr == '"'
+          read_literal
+        elsif "#" == c.chr
           @file.readline
         elsif (/^[|&;,.\s]$/ =~ c.chr) == 0
           unless @token.strip == ""
@@ -42,14 +44,28 @@ module Piche
           unless (/^\s$/ =~ c.chr) == 0
             @buffer << c.chr.to_sym
           end
-          return @buffer.shift unless @buffer.empty?
         else
           @token << c
         end
+        return @buffer.shift unless @buffer.empty?
       end
       return nil
     end
 
+    # Read a literal token.
+    def read_literal
+      while (c = @file.getc)
+        if c.chr == '"'
+          @buffer << @token
+          @token = ""
+          return
+        else
+          @token << c
+        end
+      end
+    end
+
+    # Iterates over the file tokens.
     def each
       while (token = self.next_token)
         yield token

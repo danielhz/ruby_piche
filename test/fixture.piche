@@ -52,3 +52,15 @@
         $número ;
     +actoNormativo
         =Normativa .
+
+# The next lines include literals.
+
+id001
+    +typeof
+        =PersonaNatural ;
+    +names
+        "Juan Rodrigo" ;
+    +apellidoPaterno
+        "Morales" ;
+    +apellidoMaterno
+        "Ramírez" .

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with RubyPiche.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'src/lexical_parser.rb'
+require 'lib/lexical_parser.rb'
 
 TOKENS = [
   :"@subject",
@@ -36,7 +36,12 @@ TOKENS = [
   :"=ContrataciónAdquisición", :"+contratado", :"=PersonaNatural", :",", :"=PersonaJurídica", :";",
   :"+unidadMonetaria", :"$unidadMonetaria", :";",
   :"+montoTotal", :"$número", :";",
-  :"+actoNormativo", :"=Normativa", :".", nil
+  :"+actoNormativo", :"=Normativa", :".",
+  :"id001", :"+typeof", :"=PersonaNatural", :";",
+  :"+names", "Juan Rodrigo", :";",
+  :"+apellidoPaterno", "Morales", :";",
+  :"+apellidoMaterno", "Ramírez", :".",
+  nil
 ]
 
 describe 'Lexical Parser' do
