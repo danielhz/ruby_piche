@@ -25,24 +25,56 @@ module Piche
     # Creates a parser for a file.
     def initialize(file)
       @file = file
+      if @file.class == String
+        @i = 0
+        @next_char = Proc.new do
+          c = @file[@i]
+          @i += 1
+          c.nil? ? nil : c.chr
+        end
+        @readline = Proc.new do
+          while @file[@i] and @file[@i].chr != "\n"
+            @i += 1
+          end
+        end
+      elsif @file.class == File
+        @next_char = Proc.new do
+          c = @file.getc
+          c.nil? ? nil : c.chr
+        end
+        @readline = Proc.new do
+          @file.readline
+        end
+      end
       @token = ""
       @buffer = []
+      @read_literal = Proc.new do
+        while (c = @next_char.call)
+          if c == '"'
+            @buffer << @token
+            @token = ""
+            break
+          else
+            @token << c
+          end
+        end
+      end
     end
 
     # Get the next token.
     def next_token
-      while (c = @file.getc)
-        if c.chr == '"'
-          read_literal
-        elsif "#" == c.chr
-          @file.readline
-        elsif (/^[|&;,.\s]$/ =~ c.chr) == 0
+      while (c = @next_char.call)
+        if c == '"'
+          @read_literal.call
+        elsif "#" == c
+          @readline.call
+        elsif (/^[|&;,.\s]$/ =~ c) == 0
           unless @token.strip == ""
             @buffer << @token.strip.to_sym
             @token = ""
           end
-          unless (/^\s$/ =~ c.chr) == 0
-            @buffer << c.chr.to_sym
+          unless (/^\s$/ =~ c) == 0
+            @buffer << c.to_sym
           end
         else
           @token << c
@@ -50,19 +82,6 @@ module Piche
         return @buffer.shift unless @buffer.empty?
       end
       return nil
-    end
-
-    # Read a literal token.
-    def read_literal
-      while (c = @file.getc)
-        if c.chr == '"'
-          @buffer << @token
-          @token = ""
-          return
-        else
-          @token << c
-        end
-      end
     end
 
     # Iterates over the file tokens.

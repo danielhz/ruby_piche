@@ -46,7 +46,7 @@ TOKENS = [
 
 describe 'Lexical Parser' do
 
-  it 'should get the correct token for the file' do
+  it 'should get the correct tokens for the file' do
     file = File.new 'test/fixture.piche'
     parser = Piche::LexicalParser.new file
 
@@ -55,7 +55,7 @@ describe 'Lexical Parser' do
     end
   end
 
-  it 'should get the correct token for the file' do
+  it 'should get the correct tokens for the file' do
     file = File.new 'test/fixture.piche'
     parser = Piche::LexicalParser.new file
 
@@ -63,6 +63,15 @@ describe 'Lexical Parser' do
     parser.each do |token|
       token.should == TOKENS[t]
       t += 1
+    end
+  end
+
+  it 'should get the correct tokens for a string' do
+    file = File.new 'test/fixture.piche'
+    parser = Piche::LexicalParser.new file.read
+
+    TOKENS.each do |token|
+      parser.next_token.should == token
     end
   end
 
