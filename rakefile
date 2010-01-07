@@ -12,7 +12,7 @@ require 'rake/rdoctask'
 
 desc 'Run implemented tests'
 task :test do
-  exec 'spec "test/lexical_parser_test.rb"'
+  system 'spec "test/lexical_parser_test.rb" "test/grammatical_parser_test.rb"'
 end
 
 begin
@@ -28,8 +28,8 @@ BASE_RDOC_OPTIONS = [
   '--title', 'RubyPiche -- Tools for Piche language'
 ]
 
-task :index_file do
-  exec 'sed "s/http:\/\/github.com\/danielhz\/ruby_piche\/raw\/master/link:files/g" README.rdoc > index'
+task :index do
+  system 'sed "s/http:\/\/github.com\/danielhz\/ruby_piche\/raw\/master/link:files/g" README.rdoc > index'
 end
 
 rd = Rake::RDocTask.new do |rdoc|
